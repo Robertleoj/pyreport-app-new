@@ -13,7 +13,7 @@ const db = require("./app/models");
 // });
 
 var corsOptions = {
-    origin: `httop://localhost:8081`
+    origin: `http://localhost:8081`
 };
 
 app.use(cors(corsOptions));
@@ -22,6 +22,8 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({extended: true}));
 
+require('./app/routes/report.routes')(app);
+
 app.get('/',async (req, res) => {
     // res.json({message: "Welcome to reports"});
     let [folders, _] = await db.sequelize.query("select * from PyRepDB.report_folders");
@@ -29,7 +31,7 @@ app.get('/',async (req, res) => {
 });
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.listen(port, ()=>{
     console.log(`App listening on ${port}`);

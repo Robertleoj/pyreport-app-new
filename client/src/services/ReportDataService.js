@@ -9,6 +9,8 @@ class ReportDataService {
         return http.get(`/reports/${id}`);
     }
     update(id, data){
-        return http.post("/tutorials", data);
+        return http.post("/reportss", data);
     }
 }
+
+export default  new ReportDataService();

@@ -5,5 +5,8 @@ module.exports = defineConfig({
     transpileDependencies: [
         'vuetify'
     ],
-    outputDir: path.resolve(__dirname, "../public")
+    devServer: {
+        port: 8081
+    }
+    // outputDir: path.resolve(__dirname, "../public")
 })

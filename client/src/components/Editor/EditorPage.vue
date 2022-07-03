@@ -49,6 +49,7 @@
 
 import Editor from './Editor.vue';
 // import Reports from '../../../api/collections/Reports';
+import services from '/src/services';
 
 // import router from '/src/startup/routes';
 
@@ -59,8 +60,7 @@ const DefaultCode = `def make_report():
     import datapane as dp
 
 
-    return dp.Report(dp.Table(pd.DataFrame(np.linspace(0, 1, 10))))
-print(make_report().get_html("Sample Report"))`;
+    return dp.Report(dp.Table(pd.DataFrame(np.linspace(0, 1, 10))))`;
 
 
 export default {
@@ -120,13 +120,13 @@ export default {
             var reportCode = this.$refs.editor.content;
 
             if(this.newReport){
+                console.log(services.Reports);
                 // Meteor.call('add_report', reportCode, title, 'some description', (err, res) => {
                 //     console.log(res);
                 //     router.replace({path: `/editor/${res}`});
                 //     this.newReport = false;
                 //     this.reportId = res;
                 // });
-
             } else {
                 var description = this.reportObj.description;
                 console.log(title)

@@ -4,7 +4,7 @@
         class="report-folder-container d-flex align-content-start flex-wrap px-1"
     >
 
-        <template v-if='isReport()' v-for='report in collection'>
+        <template v-if='isReport()' v-for='report in collection()'>
             <ReportListItem 
                 :reportid="report._id"
             />
@@ -21,10 +21,9 @@
 </template>
 
 <script lang="js">
-// import Reports from '../../../../api/collections/Reports';
-// import Folders from '../../../../api/collections/Folders';
 import ReportListItem from './ReportListItem.vue';
 import FolderListItem from './FolderListItem.vue';
+import services from '/src/services';
 
 export default {
     name:"ReportFileContainer",
@@ -55,6 +54,14 @@ export default {
         },
         isReport() {
             return this.title == 'Favorites' || this.title == 'Reports';
+        },
+        async collection(){
+            console.log(services.Reports);
+            if (this.title === "Folders"){
+                return await services.Folders.getAll();
+            } else{
+                return await services.Reports.getAll();
+            }
         }
     }
 

@@ -1,28 +1,41 @@
+const {DataTypes} = require('sequelize');
+
 module.exports = (sequelize, Sequelize) => {
     const Report = sequelize.define('report', {
         id: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
         name : {
-            type: Sequelize.STRING
+            type: DataTypes.STRING,
+            allowNull: false
         },
         description : {
-            type: Sequelize.STRING
+            type: DataTypes.STRING,
+            allowNull: true
         },
         folder_id: {
-            type: Sequelize.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         report_code: {
-            type: Sequelize.TEXT
+            type: DataTypes.TEXT,
+            allowNull: false
         },
-        created_at: {
-            type: Sequelize.DATE
-        },
-        updated_at: {
-            type: Sequelize.DATE
-        }
+        // created_at: {
+        //     type: DataTypes.DATE,
+        //     defaultValue: DataTypes.NOW
+        // },
+        // updated_at: {
+        //     type: DataTypes.DATE,
+        //     allowNull: true
+        // }
+    },{
+        tableName: "reports",
+        timestamps: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
     return Report;
 }
