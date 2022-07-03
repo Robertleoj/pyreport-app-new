@@ -1,7 +1,7 @@
 -- Active: 1656789151348@@127.0.0.1@3306@PyRepDB
 
 
--- drop procedure if exists sp_make_tables;
+drop procedure if exists sp_make_tables;
 
 create procedure sp_make_tables (nuke tinyint)
 Begin
@@ -37,10 +37,13 @@ if sf_tblcnt('reports', 'PyRepDB') = 0 then
         description text,
         folder_id int(12) unsigned not null,
         report_code text,
+        created_at datetime not null default now(),
+        updated_at datetime,
         primary key (id),
         foreign key(folder_id) references PyRepDB.report_folders (id)
     );
 end if;
 
 end
+
 
