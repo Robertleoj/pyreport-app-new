@@ -23,14 +23,6 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.TEXT,
             allowNull: false
         },
-        // created_at: {
-        //     type: DataTypes.DATE,
-        //     defaultValue: DataTypes.NOW
-        // },
-        // updated_at: {
-        //     type: DataTypes.DATE,
-        //     allowNull: true
-        // }
     },{
         tableName: "reports",
         timestamps: true,

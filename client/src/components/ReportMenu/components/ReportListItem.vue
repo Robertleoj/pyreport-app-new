@@ -28,7 +28,7 @@
                 class="report-title"
                 @click="openReport()"
             >
-            {{this.reportObj.title}}
+            {{this.report.name}}
             </span>
              
         <ReportItemContextMenu
@@ -36,13 +36,14 @@
             :reportId="reportid"
         />
         </v-card-title> 
-        <v-card-text>{{this.reportObj.description}}</v-card-text>
+        <v-card-text>{{this.report.description}}</v-card-text>
 
     </v-card>
 </template>
 
 <script lang="js">
 // import Reports from '../../../../api/collections/Reports';
+import services from '/src/services';
 import ReportItemContextMenu from './ReportItemContextMenu.vue';
 import { mdiPencilCircle } from '@mdi/js';
 
@@ -54,9 +55,7 @@ export default {
 
     data(){
         return {
-            shown: false,
-            html: null,
-            showMenu: false,
+            report: {},
             icons: {
                 edit: mdiPencilCircle,
             },
@@ -81,7 +80,20 @@ export default {
         },
         showCMenu(e){
             this.$refs.contextMenu.show(e);
+        },
+        getReportObj(){
+            services.Reports.get(this.reportid)
+                .then(res =>{
+                    console.log(res.data);
+                    this.report = res.data;
+                })
+                .catch(e => {
+                    console.log(e);
+                })
         }
+    },
+    mounted(){
+        this.getReportObj();
     }
 }
 </script>

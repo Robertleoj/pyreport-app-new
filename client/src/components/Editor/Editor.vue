@@ -6,21 +6,22 @@
 
 <script>
 import * as CodeMirror from 'codemirror';
-// import 'codemirror/lib/codemirror.css';
-// import 'codemirror/theme/darcula.css';
-// import 'codemirror/keymap/vim';
-// import 'codemirror/mode/python/python';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/darcula.css';
+import 'codemirror/keymap/vim';
+import 'codemirror/mode/python/python';
 
 
 export default {
     name: "Editor",
-    props: [
-        'initial_content'
-    ],
+    // props: [
+        // 'initial_content'
+    // ],
 
     data() {
         return {
-            content: this.initial_content
+            // content: this.initial_content
+            content: ''
         }
     },
     mounted(){
@@ -32,9 +33,9 @@ export default {
             mode: 'python',
             indentUnit: 4
         });
-        this.editor.setValue(this.initial_content);
+        // this.editor.setValue(this.initial_content);
         this.editor.on('change', this.updateCode);
-        this.editor.setSize(null, 700);
+        this.editor.setSize(null, "70vh");
     },
     methods: {
         setCode(code){

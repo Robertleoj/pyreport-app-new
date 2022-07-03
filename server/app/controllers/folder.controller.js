@@ -1,31 +1,28 @@
-const { reports } = require('../models');
 const db = require('../models');
 
-const Report = db.reports;
+const Folder = db.folders;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-    if(!req.body.name){
+    if(!req.body.title){
         res.status(400).send({
             message: "Content can not be empty!"
         });
         return;
     }
 
-    const report = {
+    const report_folder = {
         name: req.body.name,
-        description: req.body.description,
-        folder_id: req.body.folder_id,
-        report_code: req.body.report_code
+        parent_folder_id: req.body.parent_folder_id
     };
 
-    Report.create(report)
+    Folder.create(report_folder)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Error while creating report"
+                message: err.message || "Error while creating folder"
             });
         });
 
@@ -34,80 +31,61 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const title = req.query.title;
     let condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Report.findAll({where: condition})
+    Folder.findAll({where: condition})
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message|| "Error while getting all reports"
+                message: err.message|| "Error while getting all folders"
             });
         });
 }
 
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Report.findByPk(id)
+    Folder.findByPk(id)
         .then(data=> {
             if(data){
                 res.send(data);
             } else {
                 res.status(404).send({
-                    message: `Cannot find report ${id}`
+                    message: `Cannot find folder ${id}`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error retrieving report "+ id
+                message: "Error retrieving folder "+ id
             });
         });
 };
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
     const id = req.params.id;
-    Report.update(req.body, {
+    Folder.update(req.body, {
         where: {id: id}
     })
         .then(num => {
             if (num == 1){
                 res.send({
-                    message: "Report updated successfully"
+                    message: "Folder updated successfully"
                 });
             } else {
                 res.send({
-                    message: `Cannot update report ${id}`
+                    message: `Cannot update Folder ${id}`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: `Error updating report ${id}`
+                message: `Error updating folder ${id}`
             });
         });
 };
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.id;
-    Report.destroy({
-        where: {id: id}
-    })
-        .then(num => {
-            if(num == 1){
-                res.send({
-                    message: `Report ${id} deleted`
-                });
-            } else {
-                res.send({
-                    message: `${id} reports deleted`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: `Error deleting report ${id}`
-            });
-        });
+  
 };
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {

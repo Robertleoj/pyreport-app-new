@@ -24,6 +24,9 @@
 
 <script lang="js">
 
+import services from '/src/services';
+import bus from '/src/bus';
+
 export default {
     name: "ReportItemContextMenu",
     props: [
@@ -55,10 +58,17 @@ export default {
             })
         },
         deleteReport(){
-            // Meteor.call('delete_report', this.reportId, (err, res) =>{
-            //     console.log(err);
-            //     console.log(res);
-            // });
+            services.Reports.delete(this.reportId)
+                .then(res => {
+                    console.log(res)
+                    bus.$emit('report-deleted', {
+                        'id':this.reportId
+                    });
+                })
+                .catch(e => {
+                    console.log(e)
+                });
+
         }
     }
 

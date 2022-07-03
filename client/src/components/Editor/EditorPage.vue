@@ -8,29 +8,28 @@
                     single-line
                     filled
                     type="string"
-                    :value="getReportName()"
+                    v-model="reportTitle"
                     style="font-size:30px"
                     @change="updateTitle($event)"
                 >
 
                 </v-text-field>
             </div>
-            <div
-                class="d-flex-align-content-start flex-wrap px-1 my-4"
-            >
-                <v-btn
-                    @click="save"
-                >Save</v-btn>
-
-            </div>
-            
         </div>
-       
         <editor 
-            v-if="renderEditor"
             ref="editor" 
-            :initial_content="initCode" 
         />
+        <div
+            class="d-flex-align-content-start flex-wrap px-1 my-4"
+        >
+            <v-btn
+                @click="save"
+            >Save</v-btn>
+
+        </div>
+        
+       
+
         
         <!-- <div class="buttonRow">
             <button @click="send_report_code">Submit Code</button>
@@ -42,13 +41,7 @@
 
 
 <script lang="js">
-// import 'codemirror/lib/codemirror.css';
-// import 'codemirror/theme/darcula.css';
-// import 'codemirror/keymap/vim';
-// import 'codemirror/mode/python/python';
-
 import Editor from './Editor.vue';
-// import Reports from '../../../api/collections/Reports';
 import services from '/src/services';
 
 // import router from '/src/startup/routes';
@@ -71,30 +64,9 @@ export default {
     data() {
         return {
             reportTitle: '',
-            initCode: '',
-            newReport: true,
-            editingHeader: false,
-            renderEditor: false,
+            newReport: !this.$route.params.reportId,
             reportId: this.$route.params.reportId
         };
-    },
-    watch:{
-        reportObj(rep){
-            var reportId = this.reportId;
-
-            if(typeof reportId === 'undefined'
-                || this.renderEditor
-                || typeof rep === 'undefined'
-            ){
-                return;
-            }
-
-            this.initCode = rep.report_code;
-            this.newReport = false;
-            this.reportTitle = rep.title;
-
-            this.renderEditor=true;
-        },
     },
 
     mounted(){
@@ -109,62 +81,67 @@ export default {
             this.reportTitle=e;
         },
 
-        // update_code(){
-        //     this.content = this.$refs.editor.getValue();
-        // },
+        updateCode(code){
+            this.$refs.editor.setCode(code);
+        },
         // log_code(){
         //     console.log(this.$refs.editor.getValue());
         // },
-        save(){
+        getReport(){
+            services.Reports.get(this.reportId)
+                .then(res => {
+                    let rep = res.data;
+                    this.reportTitle = rep.name;
+                    this.updateCode(rep.report_code);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+
+        },
+        async save(){
             var title = this.reportTitle;
             var reportCode = this.$refs.editor.content;
 
             if(this.newReport){
-                console.log(services.Reports);
-                // Meteor.call('add_report', reportCode, title, 'some description', (err, res) => {
-                //     console.log(res);
-                //     router.replace({path: `/editor/${res}`});
-                //     this.newReport = false;
-                //     this.reportId = res;
-                // });
+                const report = {
+                    name: title,
+                    report_code: reportCode,
+                    folder_id: 1,
+                    description: 'random description'
+                };
+                services.Reports.create(report)
+                    .then(res => {
+                        console.log(res);
+                        this.reportId = res.data.id;
+                        this.newReport = false;
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    })
             } else {
-                var description = this.reportObj.description;
-                console.log(title)
-                console.log(description)
-                console.log(this.reportId)
-                console.log(reportCode);
+                const report = {
+                    name : title,
+                    description : "random description",
+                    folder_id : 1,
+                    report_code: reportCode
+                };
 
-                // Meteor.call(
-                //     'update_report', this.reportId, reportCode, title, 
-                //     description, (err, res) => {
-                //         console.log(err);
-                //         console.log(res);
-                // });
+                services.Reports.update(this.reportId, report)
+                    .then(res => {
+                        console.log(res);
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
             }
         },
-        getReportName(){
-            if(this.reportTitle !== ''){
-                return this.reportTitle;
-            } else {
-                return '(New Report)';
-            }
-        },
-
     },
-
-    // meteor: {
-    //     $subscribe: {
-    //         'reports': []
-    //     },
-    //     reportObj(){
-
-    //         var report = Reports.findOne(
-    //             this.$route.params.reportId
-    //         );
-
-    //         return report;
-
-    //     }
-    // }
+    mounted(){
+        console.log(this.newReport);
+        if(this.reportId){
+            this.getReport();
+        }
+    }
 }
 </script>

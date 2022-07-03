@@ -9,7 +9,13 @@ class ReportDataService {
         return http.get(`/reports/${id}`);
     }
     update(id, data){
-        return http.post("/reportss", data);
+        return http.put(`/reports/${id}`, data);
+    }
+    create(data) {
+        return http.post('/reports', data);
+    }
+    delete(id){
+        return http.delete(`/reports/${id}`);
     }
 }
 
