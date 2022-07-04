@@ -7,6 +7,7 @@ module.exports = defineConfig({
     ],
     devServer: {
         port: 8081
-    }
+    },
+    runtimeCompiler: true
     // outputDir: path.resolve(__dirname, "../public")
 })

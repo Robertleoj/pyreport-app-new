@@ -6,7 +6,7 @@
 </template>
 
 <script lang="js">
-// import vegaEmbed from 'vega-embed';
+import embed from 'vega-embed';
 import * as vega from 'vega';
 import {functions} from '/src/utils';
 
@@ -22,15 +22,23 @@ export default {
             data: ''
         }
     },
-
     methods: {
-        async render(data){
-            console.log(vega.parse(data));
-            view = new vega.View(vega.parse(data),{
-                renderer: 'svg',
-                container: '#fokk',
-                hover: true
-            }).runAsync();
+        async render(spec){
+            const result = await embed('#fokk', spec);
+            console.log(result.view);
+        },
+
+        getData(){
+            let src = this.inp.getAttribute('src');
+
+            let idx = functions.get_attachment_idx(src);
+
+            let data =atob(this.attachments[idx].file);
+            console.log(data);
+            data = JSON.parse(data);
+            console.log(data);
+            this.data = data;
+            return data;
         }
     },
 
@@ -43,12 +51,17 @@ export default {
         console.log(data);
         data = JSON.parse(data);
         console.log(data);
+        this.data = data;
 
-        this.render(data)
-            .catch(err => console.error(err));
-
+        await this.render(data);
 
         // await vegaEmbed('#fokk', this.data, {actions:false});
     }
 }
 </script>
+
+<style lang="css" scoped>
+*,*::before,*::after {
+    box-sizing: content-box
+}
+</style>
