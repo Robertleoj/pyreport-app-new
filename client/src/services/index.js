@@ -1,5 +1,7 @@
 import ReportDataService from "./ReportDataService";
+import ReportRunnerService from "./ReportRunnerService";
 
 export default {
-    Reports : ReportDataService
+    Reports : ReportDataService,
+    ReportRunner : ReportRunnerService
 }

@@ -1,48 +1,53 @@
 <template>
     <div>
-        <!-- <h1>{{reportTitle}}</h1> -->
         <report
             v-if="result !== null"
             :result="result"
         >
         </report>
-        <!-- <iframe 
-            v-if="html !== null"
-            :srcdoc="html"
-            width="100%"
-            height="1000px"
-        >
-        </iframe> -->
-
     </div>
 </template>
 
 <script lang="js">
 import Report from './Report.vue';
+import services from '/src/services';
 
 
 export default {
     data() {
         return {
             result:null,
-            reportTitle: ''
+            reportTitle: '',
+            reportId: this.$route.params.reportId
         }
     },
 
     components: {
         Report
     },
-    created() {
-        this.reportId = this.$route.params.reportId;
-        // Meteor.call('run_report', this.reportId, (error, result) => {
-        //     console.log("Ran report");
-        //     console.log(result);
-        //     this.result = result;
-        //     // let parser = new DOMParser();
-        //     // let xmlDoc = parser.parseFromString(result.report_doc, 'text/xml');
-        //     // console.log(xmlDoc);
-        //     // this.html = result.html;
-        // });
+
+    methods: {
+        async getReport(){
+            let report_code;
+            await services.Reports.get(this.reportId)
+                .then(res => {
+                    report_code = res.data.report_code;
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+            
+            services.ReportRunner.run(report_code)
+                .then(res => {
+                    this.result = res.data;
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        }
+    },
+    mounted(){
+        this.getReport();
     }
 }
 </script>

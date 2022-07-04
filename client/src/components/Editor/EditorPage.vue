@@ -141,6 +141,8 @@ export default {
         console.log(this.newReport);
         if(this.reportId){
             this.getReport();
+        } else {
+            this.updateCode(DefaultCode);
         }
     }
 }

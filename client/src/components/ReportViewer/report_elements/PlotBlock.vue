@@ -1,7 +1,6 @@
 <template>
     <div>
         <div id="fokk">
-            <Chart/>
         </div>
     </div>
 </template>
@@ -32,7 +31,7 @@ export default {
         console.log(data);
         this.data = data;
 
-        // await vegaEmbed('#fokk', this.data, {actions:false});
+        await embed('#fokk', this.data, {actions:false});
     }
 }
 </script>
