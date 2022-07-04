@@ -14,11 +14,13 @@ import services from '/src/services';
 
 
 export default {
+    props: ['id'],
+
     data() {
         return {
             result:null,
             reportTitle: '',
-            reportId: this.$route.params.reportId
+            reportId: this.id
         }
     },
 

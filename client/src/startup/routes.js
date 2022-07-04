@@ -1,14 +1,33 @@
 import VueRouter from 'vue-router';
 
 
-import EditorPage from '/src/components/Editor/EditorPage';
+import EditorPage from '/src/components/CodeEditor/EditorPage';
 import ReportsMain from '/src/components/ReportMenu/ReportsMain';
 import ReportViewerMain from '/src/components/ReportViewer/ReportViewerMain';
+import EditMain from '/src/components/EditReport/EditMain';
+
+import services from '/src/services';
+
+// async function getRootFolder(){
+//     let rootFolder;
+//     await services.Folders.getRoot()
+//         .then(res => {
+//             rootFolder = res.data.id;
+//         })
+//         .catch(e => {
+//             console.log(e);
+//         })
+//     return rootFolder;
+// }
 
 
 const routes = [
     {
         path: '/',
+        redirect: `/reports`
+    },
+    {
+        path: '/reports',
         name: 'Home',
         component: ReportsMain,
         props: route => {
@@ -16,14 +35,22 @@ const routes = [
         }
     },
     {
-        path: '/editor/:reportId?',
+        path: '/editor/:id?',
         name: "Editor",
-        component: EditorPage
+        component: EditorPage,
+        props: true
     },
     {
-        path: '/report/:reportId?',
+        path: '/report/:id?',
         name: "ReportViewer",
-        component: ReportViewerMain
+        component: ReportViewerMain,
+        props: true
+    },
+    {
+        path: '/edit/:id',
+        name: "EditReport",
+        component: EditMain,
+        props:true
     }
 ];
 

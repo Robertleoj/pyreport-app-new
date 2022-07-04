@@ -61,11 +61,12 @@ export default {
     components: {
         Editor
     },
+    props: ['id'],
     data() {
         return {
             reportTitle: '',
-            newReport: !this.$route.params.reportId,
-            reportId: this.$route.params.reportId
+            newReport: !this.id,
+            reportId: this.id
         };
     },
 

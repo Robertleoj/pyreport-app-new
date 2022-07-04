@@ -5,15 +5,22 @@ class ReportDataService {
         return http.get('/reports');
     }
 
+    inFolder(folderId) {
+        return http.get(`/reports/infolder/${folderId}`);
+    }
+
     get(id) {
         return http.get(`/reports/${id}`);
     }
+
     update(id, data){
         return http.put(`/reports/${id}`, data);
     }
+
     create(data) {
         return http.post('/reports', data);
     }
+
     delete(id){
         return http.delete(`/reports/${id}`);
     }

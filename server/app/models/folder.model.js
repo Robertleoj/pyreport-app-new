@@ -14,12 +14,16 @@ module.exports = (sequelize, Sequelize) => {
         parent_folder_id: {
             type: DataTypes.INTEGER,
             allowNull: true
+        },
+        is_root: {
+            type: DataTypes.TINYINT,
+            allowNull: false
         }
     },{
         tableName: "report_folders",
         timestamps: true,
         createdAt: 'created_at',
-        updated_at: 'updated_at'
+        updatedAt: 'updated_at'
     });
     return Folder;
 }

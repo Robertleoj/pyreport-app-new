@@ -5,6 +5,7 @@ function get_attachment_idx(src){
     return idx;
 }
 
+
 export default {
     get_attachment_idx,
 };

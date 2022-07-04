@@ -17,6 +17,9 @@ if sf_tblcnt('report_folders', 'PyRepDB') = 0 then
         id int(12) unsigned AUTO_INCREMENT,
         name varchar(140) not null,
         parent_folder_id int(10) unsigned,
+        is_root tinyint not null default 0,
+        created_at datetime not null default now(),
+        upated_at datetime,
         primary key(id),
         foreign key (parent_folder_id) references PyRepDB.report_folders (id)
     );

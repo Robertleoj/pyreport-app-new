@@ -37,19 +37,9 @@ export default {
             elements: []
         }
     },
-    // meteor : {
-    //     $subscribe: {
-    //         'reports': [],
-    //         'folders': [],
-    //     },
-    //     collection(){
-    //         if (this.title == 'Folders') {
-    //             return Folders.find({});
-    //         } else {
-    //             return Reports.find({});
-    //         }
-    //     }
-    // },
+
+    inject: ['repFolderId'],
+
     components: {
         ReportListItem,
         FolderListItem,
@@ -61,11 +51,11 @@ export default {
         isReport() {
             return this.title == 'Favorites' || this.title == 'Reports';
         },
-        getCollection(){
+        async getCollection(){
             if (this.title === "Folders"){
                 return services.Folders.getAll();
             } else{
-                services.Reports.getAll()
+                services.Reports.inFolder(this.repFolderId)
                     .then(res => {
                         this.elements = res.data;
                     })
@@ -83,8 +73,17 @@ export default {
             }
         }
     },
+    watch: {
+        repFolderId(newFolder, oldFolder){
+            if(!!newFolder){
+                this.getCollection();
+            }
+        }
+    },
     mounted(){
-        this.getCollection();
+        if(this.repFolderId){
+            this.getCollection();
+        }
         bus.$on('report-deleted', this.removeReport);
     }
 

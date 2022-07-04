@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 require('./app/routes/report.routes')(app);
 require('./app/routes/report_runner.routes')(app);
+require('./app/routes/folder.routes')(app);
 
 app.get('/',async (req, res) => {
     // res.json({message: "Welcome to reports"});

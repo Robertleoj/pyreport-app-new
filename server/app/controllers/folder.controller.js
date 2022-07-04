@@ -1,3 +1,4 @@
+const { folders } = require('../models');
 const db = require('../models');
 
 const Folder = db.folders;
@@ -26,6 +27,40 @@ exports.create = (req, res) => {
             });
         });
 
+}
+
+exports.findRoot = (req, res) =>{
+    Folder.findOne({where: {is_root: 1}})
+        .then(data => {
+            if(data){
+                res.send(data);
+            } else {
+                res.send({
+                    message: "No root folder!"
+                });
+            }
+        })
+        .catch(e => {
+            res.status(500).send({
+                message: e.message || "Error getting root folder"
+            });
+        });
+}
+
+exports.inFolder = (req, res) => {
+    const folderId = req.params.folderId;
+
+    let condition = {folder_id: folderId};
+
+    Folder.findAll({where:condition})
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err =>{
+            res.status(500).send({
+                message: err.message || `Error getting folders in folder ${folderId}`
+            });
+        });
 }
 
 exports.findAll = (req, res) => {
@@ -85,13 +120,24 @@ exports.update = (req, res) => {
 };
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {
-  
-};
-// Delete all Tutorials from the database.
-exports.deleteAll = (req, res) => {
-  
-};
-// Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  
+    const id = req.params.id;
+    Folder.destroy({
+        where: {id: id}
+    })
+        .then(num => {
+            if(num == 1){
+                res.send({
+                    message: `Folder ${id} deleted`
+                });
+            } else {
+                res.send({
+                    message: `${num} folders deleted`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: `Error deleting report ${id}`
+            });
+        });
 };

@@ -4,6 +4,23 @@ const db = require('../models');
 const Report = db.reports;
 const Op = db.Sequelize.Op;
 
+
+exports.inFolder = (req, res) => {
+    const folderId = req.params.id;
+
+    const condition = {folder_id : folderId};
+
+    Report.findAll({where: condition})
+        .then(data => {
+            res.send(data);
+        })
+        .catch(e => {
+            res.status(500).send({
+                message: e.message || `Error getting reports in folder ${folderId}`
+            });
+        });
+}
+
 exports.create = (req, res) => {
     if(!req.body.name){
         res.status(400).send({
@@ -99,7 +116,7 @@ exports.delete = (req, res) => {
                 });
             } else {
                 res.send({
-                    message: `${id} reports deleted`
+                    message: `${num} reports deleted`
                 });
             }
         })
@@ -108,12 +125,4 @@ exports.delete = (req, res) => {
                 message: `Error deleting report ${id}`
             });
         });
-};
-// Delete all Tutorials from the database.
-exports.deleteAll = (req, res) => {
-  
-};
-// Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  
 };
