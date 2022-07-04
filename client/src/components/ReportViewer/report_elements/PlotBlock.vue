@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="plotblock">
         <div id="fokk">
         </div>
     </div>
@@ -61,7 +61,21 @@ export default {
 </script>
 
 <style lang="css" scoped>
-*,*::before,*::after {
-    box-sizing: content-box
+.plotblock {
+    all:initial;
 }
+
+
+.plotblock * {
+    all:unset;
+}
+
+
+.plotblock::before,
+.plotblock::after,
+.plotblock *::before,
+.plotblock *::after {
+    all:unset;
+}
+
 </style>

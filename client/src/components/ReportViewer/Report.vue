@@ -89,6 +89,25 @@ export default {
 }
 
 .report {
-    overflow-x: scroll;
+    overflow-x: show;
 }
+
+
+/* .report {
+    all:initial;
+}
+
+
+.report * {
+    all:unset;
+}
+
+
+.report::before,
+.report::after,
+.report *::before,
+.report *::after {
+    all:unset;
+} */
+
 </style>
