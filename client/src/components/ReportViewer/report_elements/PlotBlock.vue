@@ -6,10 +6,11 @@
 </template>
 
 <script lang="js">
-import embed from 'vega-embed';
+// import vegaEmbed from 'vega-embed';
+import * as vega from 'vega';
 import {functions} from '/src/utils';
 
-
+var view;
 
 export default {
     props: [
@@ -22,6 +23,17 @@ export default {
         }
     },
 
+    methods: {
+        async render(data){
+            console.log(vega.parse(data));
+            view = new vega.View(vega.parse(data),{
+                renderer: 'svg',
+                container: '#fokk',
+                hover: true
+            }).runAsync();
+        }
+    },
+
     async mounted(){
         let src = this.inp.getAttribute('src');
 
@@ -29,9 +41,14 @@ export default {
 
         let data =atob(this.attachments[idx].file);
         console.log(data);
-        this.data = data;
+        data = JSON.parse(data);
+        console.log(data);
 
-        await embed('#fokk', this.data, {actions:false});
+        this.render(data)
+            .catch(err => console.error(err));
+
+
+        // await vegaEmbed('#fokk', this.data, {actions:false});
     }
 }
 </script>

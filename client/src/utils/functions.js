@@ -5,7 +5,18 @@ function get_attachment_idx(src){
     return idx;
 }
 
+function addScript(scriptScr){
+    let script = document.createElement('script')
+    script.onload = () => {
+        resolve(import(someComponent))
+    }
+    script.async = true
+    script.src = scriptScr;
+    document.head.appendChild(script)
+}
+
 
 export default {
-    get_attachment_idx
+    get_attachment_idx,
+    addScript
 };
