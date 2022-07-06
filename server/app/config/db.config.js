@@ -1,5 +1,5 @@
 const url = require('url');
-const conn_str = "mysql://root:mysqlpw@localhost:55000";
+const conn_str = "mysql://root:mysqlpw@localhost:55001";
 const dbConfig =parseConnectionString(conn_str);
 dbConfig.pool = {
     max: 5,
